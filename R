@@ -1,0 +1,1236 @@
+
+str()-
+ Check the structure of an object. This fantastic function will show you the data type of the 
+object you pass in (here, data.frame), and will list each column variable along with its data type.
+
+
+data_frame = like whole table
+
+
+Data Manipulation
+
+Select the first row: cash[1, ]
+
+Select the first column: cash[ ,1]
+
+Select the first column by name: cash[ ,"company"]
+
+cash$company
+
+
+subset(data, company == "B")
+
+Creating new columns in your data frame is as simple as assigning the new information to data_frame$new_column.
+
+FACTOR
+
+#Factor() : example of credit rating
+credit_rating <- c("BB", "AAA", "AA", "CCC", "AA", "AAA", "B", "BB")
+credit_factor <- factor(credit_rating)
+
+# Identify unique levels
+levels(credit_factor)
+
+# Rename the levels of credit_factor
+levels(credit_factor) <- c("2A", "3A", "1B", "2B", "3C")
+
+# Print credit_factor
+credit_factor
+
+# Create 4 buckets for AAA_rank using cut()
+AAA_factor <- cut(x = AAA_rank, breaks = c(0,25,50,75,100))
+
+# Rename the levels 
+levels(AAA_factor) <- c("low", "medium", "high", "very_high")
+
+# Print AAA_factor
+AAA_factor
+
+# Plot AAA_factor
+plot(AAA_factor)
+
+ORDERING FACTOR
+
+When creating a factor, specify ordered = TRUE and add unique levels in order from least to greatest:
+
+# Use unique() to find unique words
+unique(credit_rating)
+
+# Create an ordered factor
+credit_factor_ordered <- factor(credit_rating, ordered = TRUE, levels = c("AAA","AA","BB","B","CCC"))
+
+# Plot credit_factor_ordered
+plot(credit_factor_ordered)
+
+# Remove the A bonds at positions 3 and 7. Don't drop the A level.
+keep_level <- credit_factor[c(-3,-7)]  
+
+# Plot keep_level
+plot(keep_level)
+
+# Remove the A bonds at positions 3 and 7. Drop the A level.
+drop_level <- keep_level[,drop=TRUE]
+
+# Plot drop_level
+plot(drop_level)
+
+$ stringsAsFactors
+# Variables
+credit_rating <- c("AAA", "A", "BB")
+bond_owners <- c("Dan", "Tom", "Joe")
+
+# Create the data frame of character vectors, bonds
+bonds <- data.frame(credit_rating, bond_owners, stringsAsFactors = FALSE)
+
+# Use str() on bonds
+str(bonds)
+
+# Create a factor column in bonds called credit_factor from credit_rating
+bonds$credit_factor <- factor(bonds$credit_rating, ordered = TRUE, levels = c("AAA", "A", "BB"))
+
+# Use str() on bonds again
+str(bonds)
+
+WHAT IS A LIST?
+
+$ [] retrieves subset within the list
+$ [[]] retrieves list within the data - use to access entire data 
+# Add names to your portfolio
+names(portfolio) <- c("portfolio_name", "apple", "ibm", "correlation")
+
+# Print portfolio
+Portfolio
+
+$Retrieving data
+# Second and third elements of portfolio
+portfolio[c(2,3)]
+
+# Use $ to get the correlation data
+portfolio$correlation
+
+#t To create new elements to the list
+Portfolio_weight <- c( xxx xxx)
+
+# Remove the microsoft stock prices from your portfolio
+portfolio$microsoft <- NULL
+portfolio
+
+SPLIT () UP / “split-apply-combine”
+Splitting data into 2 set of data
+Apply different multiples
+Combine again by using unsplit() function
+
+# Define grouping from year
+grouping <- cash$year  
+
+# Split cash on your new grouping
+split_cash <- split(cash, grouping)
+
+# Look at your split_cash list
+split_cash
+
+# Unsplit split_cash to get the original data back.
+original_cash <- unsplit(split_cash, grouping)
+
+# Print original_cash
+original_cash
+
+# Print the cash_flow column of B in split_cash
+split_cash$B$cash_flow
+
+# Set the cash_flow column of company A in split_cash to 0
+split_cash$A$cash_flow <-  0
+
+# Use the grouping to unsplit split_cash
+cash_no_A <- unsplit(split_cash, grouping)
+
+# Print cash_no_A
+cash_no_A
+
+# my_matrix and my_factor
+my_matrix <- matrix(c(1,2,3,4,5,6), nrow = 2, ncol = 3)
+rownames(my_matrix) <- c("Row1", "Row2")
+colnames(my_matrix) <- c("Col1", "Col2", "Col3")
+
+my_factor <- factor(c("A", "A", "B"), ordered = T, levels = c("A", "B"))
+
+# attributes of my_matrix
+attributes(my_matrix)
+
+# Just the dim attribute of my_matrix
+attr(my_matrix, which = "dim")
+
+# attributes of my_factor
+attributes(my_factor)
+
+ 
+Intermediate
+# What is the current date?
+Sys.Date()
+
+# What is the current date and time?
+Sys.time()
+
+# Create the variable today
+today <- Sys.Date()
+
+# Confirm the class of today
+class(today)
+
+$ as.Date() function
+# Create crash
+crash <- as.Date("2008-09-29")
+
+# Print crash
+crash
+
+# crash as a numeric
+as.numeric(crash)
+
+# Current time as a numeric
+as.numeric(Sys.time())
+
+# Incorrect date format
+as.Date("09/29/2008")  #does not work if you put strings
+
+# Create dates from "2017-02-05" to "2017-02-08" inclusive.
+dates <- c("2017-02-05", "2017-02-06", "2017-02-07", "2017-02-08")
+
+# Add names to dates
+names(dates) <- c("Sunday", "Monday", "Tuesday", "Wednesday")
+
+# Subset dates to only return the date for Monday
+dates[2]
+
+Date Formatting
+Format = 
+%d: day
+%m: month
+%y: year without century 00year
+%Y: 0000year
+%b: abbreviate month name
+%B: full month name
+/ , - : common separators
+
+
+# "08,30,30"
+as.Date("08,30,1930", format = "%m, %d, %Y")
+
+# "Aug 30,1930"
+as.Date("Aug 30,1930", format = "%b %d,%Y")
+
+# "30aug1930"
+as.Date("30aug1930", format = "%d%b%Y")
+
+$ Changing the format of date
+# char_dates
+char_dates <- c("1jan17", "2jan17", "3jan17", "4jan17", "5jan17")
+
+# Create dates using as.Date() and the correct format 
+dates <- as.Date(char_dates, format= "%d%b%y")
+
+# Use format() to go from "2017-01-04" -> "Jan 04, 17"
+format(dates, format = "%b %d, %y")
+
+# Use format() to go from "2017-01-04" -> "01,04,2017"
+format(dates, format = "%m, %d, %Y")
+
+$ default origin date is 1970-01-01
+# Dates
+dates <- as.Date(c("2017-01-01", "2017-01-02", "2017-01-03"))
+
+# Create the origin
+origin <- as.Date("1970-01-01")
+
+# Use as.numeric() on dates
+as.numeric(dates)
+
+# Find the difference between dates and origin
+dates – origin
+
+Relational
+•	> : Greater than
+•	>=: Greater than or equal to 
+•	< : Less than
+•	<=: Less than or equal to
+•	==: Equality
+•	!=: Not equal
+# Stock prices
+apple <- 48.99
+micr <- 77.93
+
+# Apple vs Microsoft
+apple > micr
+
+# Not equals
+apple != micr
+
+# Dates - today and tomorrow
+today <- as.Date(Sys.Date())
+tomorrow <- as.Date(Sys.Date() + 1)
+
+# Today vs Tomorrow
+tomorrow < today
+
+$ making new lines of TRUE and FALSE
+# Print stocks
+stocks
+
+# IBM range
+stocks$ibm_buy <- stocks$ibm < 175 
+
+# Panera range
+stocks$panera_sell <- stocks$panera > 213 
+
+# IBM vs Panera
+stocks$ibm_vs_panera <- stocks$ibm > stocks$panera 
+
+# Print stocks
+stocks 
+
+Intro to Portfolio Theory
+
+
+# Define ko_pep ---- the share of coke in terms of the share price of Pepsi
+ko_pep <- ko/pep
+
+# Make a time series plot of ko_pep
+plot.zoo(ko_pep)  
+  
+# Add as a reference, a horizontal line at 1
+abline(h = 1)
+
+
+WEIGHTS
+
+# Define the vector values
+values <- c(4000, 4000, 2000)
+names(values) <- c("equities", "bonds", "commodities")
+values
+# Define the vector weights
+weights <- values/sum(values)
+
+# Print the resulting weights
+Weights
+
+#when portfolio is equally weighted
+weights <- rep(1/N,N)
+
+PORTFOLIO RETURN CALCULATION
+
+# Vector of initial value of the assets
+in_values <- c(1000, 5000, 2000)
+  
+# Vector of final values of the assets
+fin_values <- c(1100, 4500, 3000)
+
+# Weights as the proportion of total value invested in each assets
+weights <- in_values/sum(in_values)
+
+# Vector of simple returns of the assets 
+returns <- (fin_values - in_values)/ in_values
+  
+# Compute portfolio return using the portfolio return formula
+preturns <- sum(returns*weights)
+
+PERFORMANCE ANALYTICS
+
+# Load package PerformanceAnalytics 
+library(PerformanceAnalytics)
+
+# Print the first and last six rows of prices
+ head(prices, 6)
+tail(prices, 6)
+
+# Create the variable returns using Return.calculate()  
+ returns <- Return.calculate(prices)
+  
+# Print the first six rows of returns. Note that the first observation is NA, because there is no prior price.
+head(returns, 6)
+  
+# Remove the first row of returns
+returns <- returns[-1, ]
+
+$ weights rebalance
+# Create the weights
+eq_weights <- c(0.5, 0.5)
+
+# Create a portfolio using buy and hold
+pf_bh <- Return.portfolio(R = returns, weights = eq_weights)
+
+# Create a portfolio rebalancing monthly 
+pf_rebal <- Return.portfolio(R = returns, weights = eq_weights, rebalance_on = "months")
+
+# Plot the time-series
+par(mfrow = c(2, 1), mar = c(2, 4, 2, 2))
+plot.zoo(pf_bh)
+plot.zoo(pf_rebal)
+
+$ time series of weights
+verbose = TRUE in Return.portfolio() you can create a list of beginning of period (BOP) and end of period (EOP) weights and values in addition to the portfolio returns, and contributions
+
+The resultant list contains $returns, $contributions, $BOP.Weight, $EOP.Weight, $BOP.Value, and $EOP.Value
+
+# Create the weights
+eq_weights <- c(0.5, 0.5)
+
+# Create a portfolio using buy and hold
+pf_bh <- Return.portfolio(returns, weights = eq_weights, verbose = TRUE )
+
+# Create a portfolio that rebalances monthly
+pf_rebal <- Return.portfolio(returns, weights = eq_weights, rebalance_on = "months", verbose = TRUE )
+
+# Create eop_weight_bh
+eop_weight_bh <- pf_bh$EOP.Weight
+
+# Create eop_weight_rebal
+eop_weight_rebal <- pf_rebal$EOP.Weight
+
+# Plot end of period weights
+par(mfrow = c(2, 1), mar=c(2, 4, 2, 2))
+plot.zoo(eop_weight_bh$AAPL)
+plot.zoo(eop_weight_rebal$AAPL)
+
+$ Monthly returns
+# Convert the daily frequency of sp500 to monthly frequency: sp500_monthly
+sp500_monthly <- to.monthly(sp500)
+
+# Print the first six rows of sp500_monthly
+head(sp500_monthly, 6)
+
+# Create sp500_returns using Return.calculate using the closing prices
+sp500_returns <- Return.calculate(sp500_monthly$sp500.Close)
+
+# Time series plot
+plot.zoo(sp500_returns)
+
+# Produce the year x month table
+table.CalendarReturns(sp500_returns)
+
+$ Mean and Volatility
+# Compute the mean monthly returns
+mean(sp500_returns)
+
+# Compute the geometric mean of monthly returns
+mean.geometric(sp500_returns)
+
+# Compute the standard deviation
+sd(sp500_returns)
+
+# Compute the annualized mean
+Return.annualized(sp500_returns)
+
+# Compute the annualized standard deviation
+StdDev.annualized(sp500_returns)
+
+# Compute the annualized Sharpe ratio: ann_sharpe
+ann_sharpe <- SharpeRatio.annualized(sp500_returns)
+
+# Compute all of the above at once using table.AnnualizedReturns()
+table.AnnualizedReturns(sp500_returns)
+
+$ Rolling mean, std, sharpe ratio
+
+# Calculate the mean, volatility, and sharpe ratio of sp500_returns
+returns_ann <- Return.annualized(sp500_returns)
+sd_ann <- StdDev.annualized(sp500_returns)
+sharpe_ann <- SharpeRatio.annualized(sp500_returns, rf)
+
+
+
+# Plotting the 12-month rolling annualized mean
+chart.RollingPerformance(R = sp500_returns, width = 12, FUN = "Return.annualized")
+abline(h = returns_ann)
+
+# Plotting the 12-month rolling annualized standard deviation
+chart.RollingPerformance(R = sp500_returns, width = 12, FUN = "StdDev.annualized")
+abline(h = sd_ann)
+
+# Plotting the 12-month rolling annualized Sharpe ratio
+chart.RollingPerformance(R = sp500_returns,Rf = rf, width = 12, FUN = "SharpeRatio.annualized")
+abline(h = sharpe_ann)
+
+$ 특정 날짜나 구간 구하기
+# Fill in window for 2008
+sp500_2008 <- window(sp500_returns, start = "2008-01-01", end = "2008-12-31")
+
+# Create window for 2014
+sp500_2014 <- window(sp500_returns, start = "2014-01-01", end = "2014-12-31")
+
+# Plotting settings
+par(mfrow = c(1, 2) , mar=c(3, 2, 2, 2))
+names(sp500_2008) <- "sp500_2008"
+names(sp500_2014) <- "sp500_2014"
+
+$ 히스토그램 그래프랑 그리기
+# Plot histogram of 2008
+chart.Histogram(sp500_2008, methods = c("add.density", "add.normal"))
+
+# Plot histogram of 2014
+chart.Histogram(sp500_2014, methods = c("add.density", "add.normal"))
+
+#  Compute the skewness 
+skewness(sp500_daily)
+skewness(sp500_monthly)  
+
+# Compute the excess kurtois 
+kurtosis(sp500_daily)
+kurtosis(sp500_monthly)
+
+Downside risk measures
+The standard deviation gives equal weight to positive and negative returns in calculating the return variability. When the return distribution is asymmetric (skewed), investors use additional risk measures that focus on describing the potential losses. One such measure of downside risk is the Semi-Deviation. The Semi-Deviation is the calculation of the variability of returns below the mean return.
+Another more popular measure is the so-called Value-at-Risk (or VaR). Loosely speaking, the VaR corresponds to the 5% quantile of the return distribution, meaning that a more negative return can only happen with a probability of 5%. For example you might ask: "what is the largest loss I could potentially take within the next quarter, with 95% confidence?"
+The expected shortfall is another measure of risk that focuses on the average loss below the 5% VaR quantile.
+In this exercise you will examine the potential risk of the monthly returns of the S&P 500. You will use the functions SemiDeviation(), VaR(), and ES(). These functions all require the argument R, which is an xts, vector, matrix, data.frame, timeSeries, or zoo object of asset returns. However the VaR(), and ES() require another argument p, or confidence level, which is p = 0.05 in case of the 5% VaR and ES.
+# Calculate the SemiDeviation
+SemiDeviation(sp500_monthly)
+
+# Calculate the value at risk
+VaR(sp500_monthly, p = 0.025)
+VaR(sp500_monthly, p = 0.05)
+
+# Calculate the expected shortfall
+ES(R = sp500_monthly, p = 0.025)
+ES(R = sp500_monthly, p = 0.05)
+
+$ Calculation of drawdowns
+# Table of drawdowns
+table.Drawdowns(sp500_monthly)
+
+# Plot of drawdowns
+chart.Drawdown(sp500_monthly)
+
+covariance and correlation
+Covariance = Std1 * Std2 * corr(1,2)
+
+$ 무게가 어떨 때 샤프 레이시오가 가장 작은지 보는 것 loop fuction with rep()
+# Create a grid
+grid <- seq(from = 0, to = 1, by = 0.01)
+
+# Initialize an empty vector for sharpe ratios
+vsharpe <- rep(NA, times = 100 )
+
+# Create a for loop to calculate Sharpe ratios
+for(i in 1:length(grid)) {
+	weight <- grid[i]
+	preturns <- weight * returns_equities + (1 - weight) * returns_bonds
+	vsharpe[i] <- SharpeRatio.annualized(preturns)
+}
+
+# Plot weights and Sharpe ratio
+plot(grid, vsharpe, xlab = "Weights", ylab= "Ann. Sharpe ratio")
+abline(v = grid[vsharpe == max(vsharpe)], lty = 3)
+$ 그래핑 correlation and rolling correlation
+# Create a scatter plot
+chart.Scatter(returns_bonds, returns_equities)
+
+# Find the correlation
+cor(returns_equities, returns_bonds)
+
+# Merge returns_equities and returns_bonds 
+returns <- merge(returns_equities, returns_bonds)
+
+# Find and visualize the correlation using chart.Correlation
+chart.Correlation(returns)
+
+# Visualize the rolling estimates using chart.RollingCorrelation
+chart.RollingCorrelation(returns_equities, returns_bonds, width = 24)
+
+$ 포트폴리오의 .asset 들 그리기
+# Create a vector of returns 
+means <- apply(returns, 2, "mean")
+
+# Create a vector of standard deviation
+sds <- apply(returns, 2, "sd")
+
+# Create a scatter plot
+plot(sds, means)
+text(sds, means, labels = colnames(returns), cex = 0.7)
+abline(h = 0, lty = 3)
+
+$ Matrix
+# Create a matrix with variances on the diagonal
+diag_cov <- diag(sds^2)
+
+# Create a covariance matrix of returns
+cov_matrix <- cov(returns)
+
+# Create a correlation matrix of returns
+cor_matrix <- cor(returns)
+
+# Verify covariances equal the product of standard deviations and correlation
+all.equal(cov_matrix[1,2], cor_matrix[1,2] * sds[1] * sds[2])
+
+# Create a weight matrix w
+w <- as.matrix(weights)
+
+# Create a matrix of returns
+mu <- as.matrix(vmeans)
+
+# Calculate portfolio mean monthly returns
+t(w) %*% mu 
+
+# Calculate portfolio volatility
+sqrt(t(w) %*% sigma %*% w)
+
+$ 30 DOWJ portfolio (xts and number vector difference)
+# Verify the class of returns 
+class(returns)
+
+# Investigate the dimensions of returns
+dim(returns)
+
+# Create a vector of row means
+ew_preturns <- rowMeans(returns)
+
+# Cast the numeric vector back to an xts object
+ew_preturns <- xts(ew_preturns, order.by = time(returns))
+
+# Plot ew_preturns
+plot.zoo(ew_preturns)
+
+$ tseries 써서 optimization 구하기
+# Load tseries
+library(tseries)
+
+# Create an optimized portfolio of returns
+opt <- portfolio.optim(returns)
+
+# Create pf_weights
+pf_weights <- opt$pw
+
+# Assign asset names
+names(pf_weights) <- colnames(returns)
+
+# Select optimum weights opt_weights
+opt_weights <- pf_weights[opt$pw >= 0.01]
+
+# Barplot of opt_weights
+barplot(opt_weights)
+
+# Print expected portfolio return and volatility
+opt$pm
+opt$ps
+
+# Create portfolio with target return of average returns 
+pf_mean <- portfolio.optim(returns, pm = mean(returns))
+
+# Create portfolio with target return 10% greater than average returns
+pf_10plus <- portfolio.optim(returns, pm = 1.1 * mean(returns))
+
+# Print the standard deviations of both portfolios
+pf_mean$ps
+pf_10plus$ps
+
+# Calculate the proportion increase in standard deviation
+(pf_10plus$ps - pf_mean$ps) / (pf_mean$ps)
+
+$ Optimizing with weight constraints
+# Create vectors of maximum weights
+max_weights1 <- rep(1, ncol(returns))
+max_weights2 <- rep(0.1, ncol(returns))
+max_weights3 <- rep(0.05, ncol(returns))
+
+# Create an optimum portfolio with max weights of 100%
+opt1 <- portfolio.optim(returns, reshigh = max_weights1)
+
+# Create an optimum portfolio with max weights of 10%
+opt2 <- portfolio.optim(returns, reshigh = max_weights2)
+
+# Create an optimum portfolio with max weights of 5%
+opt3 <- portfolio.optim(returns, reshigh = max_weights3)
+
+# Calculate how many assets have a weight that is greater than 1% for each portfolio
+sum(opt1$pw > .01)
+sum(opt2$pw > .01)
+sum(opt3$pw > .01)
+
+# Print portfolio volatilites 
+opt1$ps
+opt2$ps
+opt3$ps
+
+$ The efficient frontier
+# Calculate each stocks mean returns
+stockmu <- colMeans(returns)
+
+# Create a grid of target values
+grid <- seq(0.01, max(stockmu), length.out = 50)  
+
+# Create empty vectors to store means and deviations
+vpm <- vpsd <- rep(NA, length(grid))
+
+# Create an empty matrix to store weights
+mweights <- matrix(NA, 50, 30)
+
+# Create your for loop
+for(i in 1:length(grid)) {
+  opt <- portfolio.optim(x = returns , pm = grid[i])
+  vpm[i] <- opt$pm
+  vpsd[i] <- opt$ps
+  mweights[i, ] <- opt$pw
+}
+
+$ Setting min and max constraints
+# Create weights_minvar as the portfolio with the least risk
+weights_minvar <- mweights[vpsd == min(vpsd), ]
+
+# Calculate the Sharpe ratio
+vsr <- (vpm - 0.0075) / vpsd
+
+# Create weights_max_sr as the portfolio with the maximum Sharpe ratio
+weights_max_sr <- mweights[vsr == max(vsr)]
+
+# Create barplot of weights_minvar and weights_max_sr
+par(mfrow = c(2, 1), mar = c(3, 2, 2, 1))
+barplot(weights_minvar[weights_minvar > 0.01])
+barplot(weights_max_sr[weights_max_sr > 0.01])
+
+
+$ Back-testing portfolio using window()
+# Create returns_estim 
+returns_estim <- window(returns, start = "1991-01-01", end = "2003-12-31")
+
+# Create returns_eval
+returns_eval <- window(returns, start = "2004-01-01", end = "2015-12-31")
+
+# Create vector of max weights
+max_weights <- rep(0.1, ncol(returns))
+
+# Create portfolio with estimation sample 
+pf_estim <- portfolio.optim(returns_estim, reshigh = max_weights)
+
+# Create portfolio with evaluation sample
+pf_eval <- portfolio.optim(returns_eval, reshigh = max_weights)
+
+# Create a scatter plot
+plot(pf_estim$pw, pf_eval$pw)
+abline(h = 0, b = 1, lty = 3)
+
+# Create returns_pf_estim
+returns_pf_estim <- Return.portfolio(returns_estim, pf_estim$pw, rebalance_on = "months")
+
+
+# Create returns_pf_eval
+returns_pf_eval <- Return.portfolio(returns_eval, pf_eval$pw, rebalance_on = "months")
+
+# Print a table for your estimation portfolio
+table.AnnualizedReturns(returns_estim)
+
+# Print a table for your evaluation portfolio
+ table.AnnualizedReturns(returns_eval)
+
+# Create returns_pf_estim
+returns_pf_estim <- Return.portfolio(returns_estim, pf_estim$pw, rebalance_on = "months")
+
+# Create returns_pf_eval
+returns_pf_eval <- Return.portfolio(returns_eval, pf_estim$pw, rebalance_on = "months")
+
+# Print a table for your estimation portfolio
+table.AnnualizedReturns(returns_pf_estim)
+
+# Print a table for your evaluation portfolio
+ table.AnnualizedReturns(returns_pf_eval)
+
+$ PortfolioAnalytics 도 있음
+# Load the package PortfolioAnalytics
+library(PortfolioAnalytics)
+
+# Explore PortfolioAnalytics 
+?PortfolioAnalytics
+
+# Happy reading!
+
+ 
+Intermediate Portfolio
+
+# Load the package
+library(PortfolioAnalytics)
+
+# Load the data
+data(indexes)
+
+# Subset the data
+index_returns <- indexes[,1:4]
+
+# Print the head of the data
+head(index_returns)
+
+$ 포트폴리오 만들고 조건 정의하기, 옵티마이즈 하기
+# Create the portfolio specification
+port_spec <- portfolio.spec(colnames(index_returns))
+
+# Add a full investment constraint such that the weights sum to 1
+port_spec <- add.constraint(portfolio = port_spec, type = "full_investment")
+
+# Add a long only constraint such that the weight of an asset is between 0 and 1
+port_spec <- add.constraint(portfolio = port_spec, type = "long_only")
+
+# Add an objective to minimize portfolio standard deviation
+port_spec <- add.objective(portfolio = port_spec, type = "risk", name = "StdDev")
+
+# Solve the optimization problem
+opt <- optimize.portfolio(index_returns, portfolio = port_spec, optimize_method = "ROI")
+
+$ 무게 배분 보기
+# Print the results of the optimization
+opt
+
+# Extract the optimal weights
+extractWeights(opt)
+
+# Chart the optimal weights
+chart.Weights(opt)
+
+
+$여기서부터 카피엔 페이스트
+# Create the portfolio specification
+port_spec <- portfolio.spec(assets = colnames(index_returns))
+
+# Add a full investment constraint such that the weights sum to 1
+port_spec <- add.constraint(portfolio = port_spec, type = "full_investment")
+
+# Add a long only constraint such that the weight of an asset is between 0 and 1
+port_spec <- add.constraint(portfolio = port_spec, type = "long_only")
+
+# Add an objective to maximize portfolio mean return
+port_spec <- add.objective(portfolio = port_spec, type = "return", name = "mean")
+
+# Add an objective to minimize portfolio variance
+port_spec <- add.objective(portfolio = port_spec, type = "risk", name = "var", risk_aversion = 10)
+
+# Solve the optimization problem
+opt <- optimize.portfolio(R = index_returns, portfolio = port_spec, optimize_method = "ROI")
+
+# Get the column names of the returns data
+asset_names <- colnames(asset_returns)
+
+# Add a full investment constraint such that the weights sum to 1
+port_spec <- portfolio.spec(assets = asset_names)
+
+# Check the class of the portfolio specification object
+class(port_spec)
+
+# Print the portfolio specification object
+print(port_spec)
+
+# Add the weight sum constraint
+port_spec <- add.constraint(portfolio = port_spec, type = "weight_sum", min_sum = 1, max_sum = 1)
+
+# Add the box constraint
+port_spec <- add.constraint(portfolio = port_spec, type = "box", min = c(0.1, 0.1, 0.1, 0.1, 0.1, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05), max = 0.4)
+
+# Add the group constraint
+port_spec <- add.constraint(portfolio = port_spec, type = "group", groups = list(c(1, 5, 7, 9, 10, 11), c(2, 3, 4, 6, 8, 12)), group_min = 0.4, group_max = 0.6)
+
+# Print the portfolio specification object
+print(port_spec)
+
+# Add a return objective to maximize mean return
+port_spec <- add.objective(portfolio = port_spec, type = "return", name = "mean")
+
+# Add a risk objective to minimize portfolio standard deviation
+port_spec <- add.objective(portfolio = port_spec, type = "risk", name = "StdDev")
+
+# Add a risk budget objective
+port_spec <- add.objective(portfolio = port_spec, type = "risk_budget", name = "StdDev", min_prisk = 0.05, max_prisk = 0.1)
+
+# Print the portfolio specification object
+print(port_spec)
+
+# Run a single period optimization using random portfolios as the optimization method
+opt <- optimize.portfolio(R = asset_returns, portfolio = port_spec, optimize_method = "random", rp = rp, trace = TRUE)
+
+# Print the output of the single-period optimization
+print(opt)
+
+# Run the optimization backtest with quarterly rebalancing
+opt_rebal <- optimize.portfolio.rebalancing(R = asset_returns, portfolio = port_spec, optimize_method = "random", rp = rp, trace = TRUE, search_size = 1000, rebalance_on = "quarters", training_period = 60, rolling_window = 60)
+
+# Print the output of the optimization backtest
+print(opt_rebal)
+
+# Extract the objective measures for the single period optimization
+extractObjectiveMeasures(opt)
+
+# Extract the objective measures for the optimization backtest
+extractObjectiveMeasures(opt_rebal)
+
+
+# Extract the optimal weights for the single period optimization
+extractWeights(opt)
+
+# Chart the weights for the single period optimization
+chart.Weights(opt)
+
+# Extract the optimal weights for the optimization backtest
+extractWeights(opt_rebal)
+
+# Chart the weights for the optimization backtest
+chart.Weights(opt_rebal)
+
+# Add a return objective with "mean" as the objective name
+port_spec <- add.objective(portfolio = port_spec, type = "return", name = "mean")
+
+# Calculate the sample moments
+moments <- set.portfolio.moments(R = asset_returns, portfolio = port_spec)
+
+# Check if moments$mu is equal to the sample estimate of mean returns using the provided code
+moments$mu == colMeans(asset_returns)
+
+# Add a risk objective with "StdDev" as the objective name
+port_spec <- add.objective(portfolio = port_spec, type = "risk", name = "StdDev")
+
+# Calculate the sample moments using set.portfolio.moments. Assign to a variable named moments.
+moments <- set.portfolio.moments(R = asset_returns, portfolio = port_spec)
+
+# Check if moments$sigma is equal to the sample estimate of the variance-covariance matrix using the provided code
+moments$sigma == cov(asset_returns)
+
+# Print the portfolio specification object
+print(port_spec)
+
+# Fit a statistical factor model with k = 3 factors to the asset returns
+fit <- statistical.factor.model(R = asset_returns, k = 3)
+
+# Estimate the portfolio moments using the "boudt" method with k = 3 factors
+moments_boudt <- set.portfolio.moments(R = asset_returns, portfolio = port_spec, method = "boudt", k = 3)
+
+# Check if the covariance matrix extracted from the model fit is equal to the estimate in `moments_boudt`
+moments_boudt$sigma == extractCovariance(fit)
+
+# Define a function named moments_robust that estimates the variance-covariance matrix of the asset returns
+moments_robust <- function(R, portfolio){
+  out <- list()
+  out$sigma <- cov.rob(R, method = "mcd")$cov
+  out
+}
+
+# Estimate the portfolio moments using the function you just defined 
+moments <- moments_robust(R = asset_returns, portfolio = port_spec)
+
+# Check if the variance-covariance matrix estimated using cov.rob directly is equal to the estimate in `moments`
+cov.rob(asset_returns, method = "mcd")$cov == moments$sigma
+
+# Run the optimization with custom moment estimates
+opt_custom <- optimize.portfolio(R = asset_returns, portfolio = port_spec, optimize_method = "random", rp = rp, momentFUN = "moments_robust")
+
+# Print the results of the optimization with custom moment estimates
+print(opt_custom)
+
+# Run the optimization with sample moment estimates
+opt_sample <- optimize.portfolio(R = asset_returns, portfolio = port_spec, optimize_method = "random", rp = rp)
+
+# Print the results of the optimization with sample moment estimates
+print(opt_sample)
+
+# Custom annualized portfolio standard deviation
+pasd <- function(R, weights, sigma, scale = 12){
+  sqrt(as.numeric(t(weights) %*% sigma %*% weights)) * sqrt(scale)
+}
+
+# Add custom objective to portfolio specification
+port_spec <- add.objective(portfolio = port_spec, type = "risk", name = "pasd")
+
+# Print the portfolio specificaton object
+print(port_spec)
+
+# Run the optimization
+opt <- optimize.portfolio(R = asset_returns, portfolio = port_spec, momentFUN = set_sigma, optimize_method = "random", rp = rp)
+
+# Print the results of the optimization
+print(opt)
+
+$여기서부터 리얼 월드 예
+
+# Load the package
+library(PortfolioAnalytics)
+
+# Load the data
+data(edhec)
+
+# Assign the data to a variable
+asset_returns <- edhec
+
+# Create a vector of equal weights
+equal_weights <- rep(1 / ncol(asset_returns), ncol(asset_returns))
+
+# Compute the benchmark returns
+r_benchmark <- Return.portfolio(asset_returns, weights = equal_weights, rebalance_on = "quarters")
+colnames(r_benchmark) <- "benchmark"
+
+# Plot the benchmark returns
+plot(r_benchmark)
+
+# Create the portfolio specification
+port_spec <- portfolio.spec(colnames(asset_returns))
+
+# Add a full investment constraint such that the weights sum to 1
+port_spec <- add.constraint(portfolio = port_spec, type = "full_investment")
+
+# Add a long only constraint such that the weight of an asset is between 0 and 1
+port_spec <- add.constraint(portfolio = port_spec, type = "long_only")
+
+# Add an objective to minimize portfolio standard deviation
+port_spec <- add.objective(portfolio = port_spec, type = "risk", name = "StdDev")
+
+# Print the portfolio specification
+print(port_spec)
+
+
+# Run the optimization
+opt_rebal_base <- optimize.portfolio.rebalancing(R = asset_returns, 
+                                                 portfolio = port_spec, 
+                                                 optimize_method = "ROI", 
+                                                 rebalance_on = "quarters", 
+                                                 training_period = 60,
+                                                 rolling_window = 60)
+
+# Print the results
+print(opt_rebal_base)
+
+# Chart the weights
+chart.Weights(opt_rebal_base)
+
+# Compute the portfolio returns
+returns_base <- Return.portfolio(R = asset_returns, weights = extractWeights(opt_rebal_base))
+colnames(returns_base) <- "base"
+
+
+# Add a risk budge objective
+port_spec <- add.objective(portfolio = port_spec, 
+                           type = "risk_budget", 
+                           name = "StdDev", 
+                           min_prisk = 0.05, 
+                           max_prisk = 0.1)
+
+# Run the optimization
+opt_rebal_rb <- optimize.portfolio.rebalancing(R = asset_returns, 
+                                               portfolio = port_spec, 
+                                               optimize_method = "random", rp =rp,
+                                               trace = TRUE,
+                                               rebalance_on = "quarters", 
+                                               training_period = 60,
+                                               rolling_window = 60)
+
+# Chart the weights
+chart.Weights(opt_rebal_rb)
+
+# Chart the percentage contribution to risk
+chart.RiskBudget(opt_rebal_rb, match.col = "StdDev", risk.type = "percentage")
+
+# Compute the portfolio returns
+returns_rb <- Return.portfolio(R = asset_returns, weights = extractWeights(opt_rebal_rb))
+colnames(returns_rb) <- "risk_budget"
+
+# Run the optimization
+opt_rebal_rb_robust <- optimize.portfolio.rebalancing(R = asset_returns, 
+                                                      momentFUN = "moments_robust",
+                                                      portfolio = port_spec, 
+                                                      optimize_method = "random", rp = rp,
+                                                      trace = TRUE, 
+                                                      rebalance_on = "quarters", 
+                                                      training_period = 60,
+                                                      rolling_window = 60)
+                                                      
+                                                      
+# Chart the weights
+chart.Weights(opt_rebal_rb_robust)
+
+# Chart the percentage contribution to risk
+chart.RiskBudget(opt_rebal_rb_robust, match.col = "StdDev", risk.type = "percentage")
+
+# Compute the portfolio returns
+returns_rb_robust <- Return.portfolio(R = asset_returns, weights = extractWeights(opt_rebal_rb_robust))
+colnames(returns_rb_robust) <- "rb_robust"
+
+# Combine the returns
+ret <- cbind(r_benchmark, returns_base, returns_rb, returns_rb_robust)
+
+# Compute annualized returns
+table.AnnualizedReturns(R = ret)
+
+# Chart the performance summary
+charts.PerformanceSummary(R = ret)
+    
+TRADING
+
+getSymbols("SPY", 
+           from = "2000-01-01", 
+           to = "2016-06-30", 
+           src =  "yahoo", 
+           adjust =  TRUE)
+
+# Plot the closing price of SPY
+plot(Cl(SPY))
+
+TTR: toolbox of classical trading indicators <- package: library(“TTR”)
+SMA: Simple Moving Average
+Popular for CTAs: 200-day moving average
+	Displays where prices have been over the past 10 months
+
+$ SMA 200 moving average
+# Plot the closing prices of SPY
+plot(Cl(SPY))
+
+# Add a 200-day SMA using lines()
+lines(SMA(Cl(SPY), n = 200), col = "red")
+
+$ Prepare for backtest
+# Load the quantstrat package
+library("quantstrat")
+
+# Create initdate, from, and to strings
+initdate <- "1999-01-01"
+from <- "2003-01-01"
+to <- "2015-12-31"
+
+# Set the timezone to UTC
+Sys.setenv(TZ = "UTC")
+
+# Set the currency to USD 
+currency("USD")
+
+# Load the quantmod package
+library("quantmod")
+
+# Retrieve SPY from yahoo
+SPY <- getSymbols("SPY", from = "2003-01-01", to = "2015-12-31", src = "yahoo", adjust = TRUE)
+SPY
+# Use stock() to initialize SPY and set currency to USD
+stock("SPY", currency = "USD")
+
+Initializing Strategy and Trading
+
+# Define your trade size and initial equity
+tradesize <- 100000
+initeq <- 100000
+
+# Define the names of your strategy, portfolio and account
+strategy.st <- "firststrat"
+portfolio.st <- "firststrat"
+account.st <- "firststrat"
+
+# Remove the existing strategy if it exists
+rm.strat(strategy.st)
+
+# Initialize the portfolio
+initPortf(portfolio.st, symbols = "SPY", initDate = initdate, currency = "USD")
+
+# Initialize the account
+initAcct(account.st, portfolios = portfolio.st, initDate = initdate, currency = "USD", initEq = initeq)
+
+# Initialize the orders
+initOrders(portfolio.st, initDate = initdate)
+
+# Store the strategy
+strategy(strategy.st, store = TRUE)
+
+INDICATORS
+Oscillation indicators
+
+# Create a 200-day SMA
+spy_sma <- SMA(x = Cl(SPY), n = 200)
+
+$ RSI: Relative Strength Index
+# Create an RSI with a 3-day lookback period  
+spy_rsi <- RSI(price = Cl(SPY), n = 3)
+
+The Relative Strength Index (RSI) is another indicator that rises with positive price changes and falls with negative price changes. It is equal to 100 - 100/(1 + RS), where RS is the average gain over average loss over the lookback period.
+
+# Plot the closing price of SPY
+plot(Cl(SPY))
+
+# Plot the RSI 2
+plot(RSI(price = Cl (SPY), n = 2))
+
+# What kind of indicator?
+"reversion"
+
+IMPLEMENTING an INDICATOR
+
+# Add a 200-day SMA indicator to strategy.st
+add.indicator(strategy = strategy.st, 
+              
+              # Add the SMA function
+              name = 'SMA', 
+              
+              # Create a lookback period
+              arguments = list(x = quote(Cl(mktdata)), n = 200), 
+              
+              # Label your indicator SMA200
+              label = "SMA200")
+
+# Add a 50-day SMA indicator to strategy.st
+add.indicator(strategy = strategy.st, 
+              
+              # Add the SMA function
+              name = "SMA", 
+              
+              # Create a lookback period
+              arguments = list(x = quote(Cl(mktdata)), n=50), 
+              
+              # Label your indicator SMA50
+              label = "SMA50")
+
+# Add an RSI 3 indicator to strategy.st
+add.indicator(strategy = strategy.st, 
+              
+              # Add the RSI 3 function
+              name = 'RSI', 
+              
+              # Create a lookback period
+              arguments = list(x = quote(Cl(mktdata)), n=3), 
+              
+              # Label your indicator RSI_3
+              label = "RSI_3")
+
+$ RSI_avg function
+# Write the RSI_avg function
+RSI_avg <- function(price, n1, n2) {
+  
+  # RSI 1 takes an input of the price and n1
+  rsi_1 <- RSI(price = price, n = n1)
+  
+  # RSI 2 takes an input of the price and n2
+  rsi_2 <- RSI(price = price, n = n2)
+  
+  # RSI_avg is the average of rsi_1 and rsi_2
+  RSI_avg <- (rsi_1 + rsi_2)/2
+  
+  # Your output of RSI_avg needs a column name of RSI_avg
+  colnames(RSI_avg) <- "RSI_avg"
+  return(RSI_avg)
+}
+
+# Add this function as RSI_3_4 to your strategy with n1 = 3 and n2 = 4
+add.indicator(strategy.st, name = "RSI_avg", arguments = list(price = quote(Cl(mktdata)), n1 = 3, n2 = 4), label ="RSI_3_4")
+
+David Varadi Oscillator (DVO)
+The purpose of this oscillator is similar to something like the RSI in that it attempts to find opportunities to buy a temporary dip and sell in a temporary uptrend. In addition to obligatory market data, an oscillator function takes in two lookback periods. Finally, it uses the runPercentRank() function to take a running percentage rank of this average ratio, and multiplies it by 100 to convert it to a 0-100 quantity
+
+# Declare the DVO function
+DVO <- function(HLC, navg = 2, percentlookback = 126) {
+  
+  # Compute the ratio between closing prices to the average of high and low
+  ratio <- Cl(HLC)/((Hi(HLC) + Lo(HLC))/2)
+  
+  # Smooth out the ratio outputs using a moving average
+  avgratio <- SMA(ratio, n = navg)
+  
+  # Convert ratio into a 0-100 value using runPercentRank()
+  out <- runPercentRank(avgratio, n = percentlookback, exact.multiplier = 1) * 100
+  colnames(out) <- "DVO"
+  return(out)
+}
+
+# Add the DVO indicator to your strategy
+add.indicator(strategy = strategy.st, name = "DVO", 
+              arguments = list(HLC = quote(HLC(mktdata)), navg = 2, percentlookback = 126),
+              label = "DVO_2_126")
+
+# Use applyIndicators to test out your indicators
+test <- applyIndicators(strategy = strategy.st, mktdata = OHLC(SPY))
+
+# Subset your data between Sep. 1 and Sep. 5 of 2013
+test_subset <- test["2013-09-01/2013-09-05"]
